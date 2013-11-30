@@ -13,38 +13,32 @@
 	<!-- 数据列表 -->
 	<div class="data-table">
         <div class="data-table table-striped">
-            <?php
-                $thead = array(
-                    '_html'=>array(
-                        '_th'=>'row-selected',
-                        'th'=>'<input class="check-all" type="checkbox"/>',
-                        'td'=>'<input class="ids" type="checkbox" name="id[]" value="$id" />',
-                    ),
-                    'id'  => '编号',
-                    'name'=>'字段',
-                    'title'=>array(
-                        '_title'=>'名称',
-                        'data-id'=>'$id',
-                        'href'   =>'Attribute/edit?id=$id',
-                    ),
-					'type'=>array(
-						'_title'=>'数据类型',
-						'tag'   =>'span',
-						'func'=>'get_attribute_type($type)',
-					),
-                    'create_time'=>array(
-                        '_title'=>'创建时间',
-                        'tag'   =>'span',
-                        'func'  => 'date("y-m-d H:i",$create_time)',
-                    ),
-                    'status_text'=>'状态',
-                    '操作'=>array(
-						'编辑'=>array( 'href' => 'Attribute/edit?id=$id'),
-						'删除'=>array( 'href' => 'Attribute/remove?id=$id', 'class'=>'confirm ajax-get'),
-                    ),
-                );
-                echo $_table_list = $__controller__->tableList($_list,$thead);
-            ?>
+	<table class="">
+    <thead>
+        <tr>
+		<th class="row-selected row-selected"><input class="check-all" type="checkbox"/></th>
+		<th class="">编号</th>
+		<th class="">字段</th>
+		<th class="">名称</th>
+		<th class="">数据类型</th>
+		<th class="">操作</th>
+		</tr>
+    </thead>
+    <tbody>
+		<volist name="_list" id="vo">
+		<tr>
+            <td><input class="ids" type="checkbox" name="id[]" value="{$vo.id}" /></td>
+			<td>{$vo.id} </td>
+			<td>{$vo.name}</td>
+			<td><a data-id="{$vo.id}" href="{:U('Attribute/edit?id='.$vo['id'])}">{$vo.title}</a></td>
+			<td><span>{:get_attribute_type($vo['type'])}</span></td>
+			<td><a href="{:U('Attribute/edit?id='.$vo['id'])}">编辑</a>
+				<a class="confirm ajax-get" href="{:U('Attribute/remove?id='.$vo['id'])}">删除</a>
+                </td>
+		</tr>
+		</volist>
+	</tbody>
+    </table> 
         </div>
     </div>
     <div class="page">

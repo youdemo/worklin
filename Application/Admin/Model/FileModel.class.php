@@ -44,6 +44,7 @@ class FileModel extends Model{
     public function upload($files, $setting, $driver = 'Local', $config = null){
         /* 上传文件 */
         $setting['callback'] = array($this, 'isFile');
+		$setting['removeTrash'] = array($this, 'removeTrash');
         $Upload = new Upload($setting, $driver, $config);
         $info   = $Upload->upload($files);
 
@@ -112,7 +113,7 @@ class FileModel extends Model{
             throw new \Exception('缺少参数:md5');
         }
         /* 查找文件 */
-        $map = array('md5' => $file['md5']);
+        $map = array('md5' => $file['md5'],'sha1'=>$file['sha1'],);
         return $this->field(true)->where($map)->find();
     }
 
@@ -144,5 +145,13 @@ class FileModel extends Model{
             return false;
         }
     }
+
+	/**
+	 * 清除数据库存在但本地不存在的数据
+	 * @param $data
+	 */
+	public function removeTrash($data){
+		$this->where(array('id'=>$data['id'],))->delete();
+	}
 
 }

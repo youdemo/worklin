@@ -14,36 +14,38 @@
     </div>
 	<!-- 数据列表 -->
 	<div class="data-table">
-        <?php
-            $thead = array(
-                '_html'=>array(
-                    '_th'=>'row-selected',
-                    'th'=>'<input class="check-all" type="checkbox"/>',
-                    'td'=>'<input class="ids" type="checkbox" name="ids[]" value="$id" />',
-                ),
-                'id'=>'编号',
-                'name'=>'行为标识',
-                'title'=>array(
-                    '_title'=>'行为名称',
-                    'tag'   =>'a',
-                    'href'  =>'editAction?id=$id'
-                ),
-				'type'=>array(
-                    '_title'=>'类型',
-                    'tag'   =>'span',
-                    'func'  =>'get_action_type($type)'
-                ),
-                'remark'=>'规则说明',
-                'status_text'=>'状态',
-                '操作'=>array(
-                    '禁用'=>array( 'href' => 'User/setStatus?status=0&ids=$id', 'class'=>'ajax-get', 'condition'=>'$status==1',),
-                    '启用'=>array( 'href' => 'User/setStatus?status=1&ids=$id', 'class'=>'ajax-get', 'condition'=>'$status==0',),
-					'编辑'=>array( 'href' => 'User/editAction?id=$id'),
-                    '删除'=>array( 'href' => 'User/setStatus?status=-1&ids=$id', 'class'=>'confirm ajax-get' ),
-                ),
-            );
-            echo $_table_list = $__controller__->tableList($_list,$thead);
-        ?>
+<table class="">
+    <thead>
+        <tr>
+		<th class="row-selected row-selected"><input class="check-all" type="checkbox"/></th>
+		<th class="">编号</th>
+		<th class="">标识</th>
+		<th class="">名称</th>
+		<th class="">类型</th>
+		<th class="">规则</th>
+		<th class="">状态</th>
+		<th class="">操作</th>
+		</tr>
+    </thead>
+    <tbody>
+		<volist name="_list" id="vo">
+		<tr>
+            <td><input class="ids" type="checkbox" name="ids[]" value="{$vo.id}" /></td>
+			<td>{$vo.id} </td>
+			<td>{$vo.name}</td>
+			<td><a href="{:U('editAction?id='.$vo['id'])}">{$vo.title}</a></td>
+			<td><span>{:get_action_type($vo['type'])}</span></td>
+			<td>{$vo.remark}</td>
+			<td>{$vo.status_text}</td>
+			<td><a href="{:U('User/editAction?id=='.$vo['id'])}">编辑</a>
+				<a href="{:U('User/setStatus?ids='.$vo['id'].'&status='.abs(1-$vo['status']))}" class="ajax-get">{$vo.status|show_status_op}</a>
+				<a href="{:U('User/setStatus?status=-1&ids='.$vo['id'])}" class="confirm ajax-get">删除</a>
+                </td>
+		</tr>
+		</volist>
+	</tbody>
+    </table> 
+        
 	</div>
 	<!-- 分页 -->
 	<div class="page">{$_page}</div>

@@ -29,7 +29,7 @@ class ThinkController extends AdminController {
         //获取模型信息
         $model = M('Model')->getByName($model);
         $model || $this->error('模型不存在！');
-		
+
         //解析列表规则
         $fields = array();
         $grids  = preg_split('/[;\r\n]+/s', $model['list_grid']);
@@ -43,7 +43,7 @@ class ThinkController extends AdminController {
                 // 链接信息
 				$value['href']	=	$val[2];
                 // 搜索链接信息中的字段信息
-                preg_replace_callback('/\[([a-z_]+)\]/', function($match) use(&$fields){$fields[]=$match[1];}, $value['href']); 
+                preg_replace_callback('/\[([a-z_]+)\]/', function($match) use(&$fields){$fields[]=$match[1];}, $value['href']);
 			}
             if(strpos($val[1],'|')){
                 // 显示格式定义
@@ -140,7 +140,6 @@ class ThinkController extends AdminController {
 
         $ids = array_unique((array)I('ids',0));
 
-
         if ( empty($ids) ) {
             $this->error('请选择要操作的数据!');
         }
@@ -160,11 +159,11 @@ class ThinkController extends AdminController {
         $model || $this->error('模型不存在！');
 
         if(IS_POST){
-            $Model = M(get_table_name($model['id']));
+            $Model = D(parse_name(get_table_name($model['id']),1));
             if($Model->create() && $Model->save()){
                 $this->success('保存成功！', U('lists?model='.$model['name']));
             } else {
-                $this->error('保存出错！');
+                $this->error($Model->getError());
             }
         } else {
             $fields = get_model_attribute($model['id']);
@@ -186,12 +185,12 @@ class ThinkController extends AdminController {
         $model = M('Model')->where(array('status' => 1))->find($model);
         $model || $this->error('模型不存在！');
         if(IS_POST){
-            $Model = M(get_table_name($model['id']));
+            $Model = D(parse_name(get_table_name($model['id']),1));
 
             if($Model->create() && $Model->add()){
                 $this->success('添加成功！', U('lists?model='.$model['name']));
             } else {
-                $this->error('添加出错！');
+                $this->error($Model->getError());
             }
         } else {
 

@@ -24,7 +24,7 @@
 	<div class="cf">
 		<div class="fl">
 			<div class="btn-group">
-				<eq name="allow" value="1">
+				<gt name="allow" value="0">
 					<button class="btn document_add" <if condition="count($model) eq 1">url="{:U('article/add',array('cate_id'=>$cate_id,'pid'=>I('pid',0),'model_id'=>$model[0]))}"</if>>新 增
 						<if condition="count($model) gt 1"><i class="btn-arrowdown"></i></if>
 					</button>
@@ -39,7 +39,7 @@
 					<button class="btn disabled" >新 增
 						<if condition="count($model) gt 1"><i class="btn-arrowdown"></i></if>
 					</button>
-				</eq>
+				</gt>
 			</div>
             <button class="btn ajax-post" target-form="ids" url="{:U("Article/setStatus",array("status"=>1))}">启 用</button>
 			<button class="btn ajax-post" target-form="ids" url="{:U("Article/setStatus",array("status"=>0))}">禁 用</button>

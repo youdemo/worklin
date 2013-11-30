@@ -84,9 +84,20 @@ class TagLib {
         $xml    =   (array)($xml->tag->attributes());
         $array  =   array_change_key_case($xml['@attributes']);
         if($array) {
-            $attrs  = explode(',',$this->tags[strtolower($tag)]['attr']);
-            if(isset($this->tags[strtolower($tag)]['must'])){
-                $must   =   explode(',',$this->tags[strtolower($tag)]['must']);
+            $tag    =   strtolower($tag);
+            if(!isset($this->tags[$tag])){
+                foreach($this->tags as $key=>$val){
+                    if(isset($val['alias']) && in_array($tag,explode(',',$val['alias']))){
+                        $item  =   $val;
+                        break;
+                    }
+                }
+            }else{
+                $item  =   $this->tags[$tag];
+            }            
+            $attrs  = explode(',',$item['attr']);
+            if(isset($item['must'])){
+                $must   =   explode(',',$item['must']);
             }else{
                 $must   =   array();
             }

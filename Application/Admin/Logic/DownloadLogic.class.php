@@ -18,7 +18,7 @@ class DownloadLogic extends BaseLogic{
 	protected $_validate = array(
 		array('content', 'require', '详细内容不能为空！', self::MUST_VALIDATE , 'regex', self::MODEL_BOTH),
 		array('download', 'number', '下载次数请输入整数！', self::VALUE_VALIDATE , 'regex', self::MODEL_BOTH),
-		array('file', 'require', '请上传附件！', self::MUST_VALIDATE , 'regex', self::MODEL_BOTH),
+		array('file_id', 'require', '请上传附件！', self::MUST_VALIDATE , 'regex', self::MODEL_BOTH),
 	);
 
 	/* 自动完成规则 */
@@ -37,15 +37,12 @@ class DownloadLogic extends BaseLogic{
 			return false;
 		}
 		$file = D('File')->field(true)->find($data['file_id']);
-		$data['file'] = think_encrypt(json_encode($file));
-		$data['file_id'] = $file;
 		return $data;
 	}
 
 	/**
-	 *
-	 * @param unknown $id
-	 * @return boolean
+	 * 更新数据
+	 * @param intger $id
 	 * @author huajie <banhuajie@163.com>
 	 */
 	public function update($id = 0){
@@ -55,7 +52,7 @@ class DownloadLogic extends BaseLogic{
 			return false;
 		}
 
-		$file = json_decode(think_decrypt(I('post.file')), true);
+		$file = json_decode(think_decrypt(I('post.file_id')), true);
 		if(!empty($file)){
 			$data['file_id'] = $file['id'];
 			$data['size']    = $file['size'];
@@ -125,7 +122,7 @@ class DownloadLogic extends BaseLogic{
 			return false;
 		}
 
-		$file = json_decode(think_decrypt(I('post.file')), true);
+		$file = json_decode(think_decrypt(I('post.file_id')), true);
 		if(!empty($file)){
 			$data['file_id'] = $file['id'];
 			$data['size']    = $file['size'];

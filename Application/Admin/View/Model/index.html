@@ -16,35 +16,36 @@
 	<!-- 数据列表 -->
 	<div class="data-table">
         <div class="data-table table-striped">
-            <?php
-                $thead = array(
-                    '_html'=>array(
-                        '_th'=>'row-selected',
-                        'th'=>'<input class="check-all" type="checkbox"/>',
-                        'td'=>'<input class="ids" type="checkbox" name="id[]" value="$id" />',
-                    ),
-                    'id'  => '编号',
-                    'name'=>'标识',
-                    'title'=>array(
-                        '_title'=>'名称',
-                        'data-id'=>'$id',
-                        'href'   =>'Model/edit?id=$id',
-                    ),
-                    'create_time'=>array(
-                        '_title'=>'创建时间',
-                        'tag'   =>'span',
-                        'func'  => 'date("Y-m-d H:i:s",$create_time)',
-                    ),
-                    'status_text'=>'状态',
-                    '操作'=>array(
-                        '数据'=>array( 'href' => 'Think/lists?model=$name'),
-                        '禁用'=>array( 'href' => 'Model/setStatus?id=$id&status=0', 'class'=>'ajax-get', 'condition'=>'$status==1',),
-                        '启用'=>array( 'href' => 'Model/setStatus?id=$id&status=1', 'class'=>'ajax-get', 'condition'=>'$status==0',),
-						'编辑'=>array( 'href' => 'Model/edit?id=$id'),
-                    ),
-                );
-                echo $_table_list = $__controller__->tableList($_list,$thead);
-            ?>
+<table class="">
+    <thead>
+        <tr>
+		<th class="row-selected row-selected"><input class="check-all" type="checkbox"/></th>
+		<th class="">编号</th>
+		<th class="">标识</th>
+		<th class="">名称</th>
+		<th class="">创建时间</th>
+		<th class="">状态</th>
+		<th class="">操作</th>
+		</tr>
+    </thead>
+    <tbody>
+		<volist name="_list" id="vo">
+		<tr>
+            <td><input class="ids" type="checkbox" name="id[]" value="{$vo.id}" /></td>
+			<td>{$vo.id} </td>
+			<td>{$vo.name}</td>
+			<td><a data-id="{$vo.id}" href="{:U('model/edit?id='.$vo['id'])}">{$vo.title}</a></td>
+			<td><span>{$vo.create_time|time_format}</span></td>
+			<td>{$vo.status_text}</td>
+			<td><a href="{:U('think/lists?model='.$vo['name'])}">数据</a>
+				<a href="{:U('model/setstatus?id='.$vo['id'].'&status='.abs(1-$vo['status']))}" class="ajax-get">{$vo.status|show_status_op}</a>
+				<a href="{:U('model/edit?id='.$vo['id'])}">编辑</a>
+                </td>
+		</tr>
+		</volist>
+	</tbody>
+    </table> 
+            
         </div>
     </div>
     <div class="page">

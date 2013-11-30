@@ -75,7 +75,7 @@
                             <case value="checkbox">
                                 <volist name=":parse_field_attr($field['extra'])" id="vo">
                                 	<label class="checkbox">
-                                    <input type="checkbox" value="{$key}" name="{$field.name}" <eq name="data[$field['name']]" value="$key">checked="checked"</eq>>{$vo}
+                                    <input type="checkbox" value="{$key}" name="{$field.name}[]" <if condition="check_document_position($data[$field['name']],$key)">checked="checked"</if>>{$vo}
                                 	</label>
                                 </volist>
                             </case>
@@ -131,7 +131,7 @@
                             <case value="file">
 								<div class="controls">
 									<input type="file" id="upload_file_{$field.name}">
-									<input type="hidden" name="{$field.name}" value="{$data[$field['name']]}"/>
+									<input type="hidden" name="{$field.name}" value="{:think_encrypt(json_encode(get_table_field($data[$field['name']],'id','','File')))}"/>
 									<div class="upload-img-box">
 										<present name="data[$field['name']]">
 											<div class="upload-pre-file"><span class="upload_icon_all"></span>{$data[$field['name']]|get_table_field=###,'id','name','File'}</div>

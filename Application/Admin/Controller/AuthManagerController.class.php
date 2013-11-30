@@ -184,7 +184,7 @@ class AuthManagerController extends AdminController{
      * @author 朱亚杰 <zhuyajie@topthink.net>
      */
     public function changeStatus($method=null){
-        if ( empty($_GET['id']) ) {
+        if ( empty($_REQUEST['id']) ) {
             $this->error('请选择要操作的数据!');
         }
         switch ( strtolower($method) ){

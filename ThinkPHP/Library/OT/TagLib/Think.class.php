@@ -25,8 +25,7 @@ class Think extends TagLib{
         );
 
 	/* 导航列表 */
-	public function _nav($attr, $content){
-		$tag    = $this->parseXmlAttr($attr, 'next');
+	public function _nav($tag, $content){
 		$filed  = empty($tag['filed']) ? 'true' : $tag['filed'];
 		$name   = $tag['name'];
 		$parse  = $parse   = '<?php ';
@@ -39,8 +38,7 @@ class Think extends TagLib{
 	}
 
     // sql查询
-    public function _query($attr,$content) {
-        $tag        =	$this->parseXmlAttr($attr,'query');
+    public function _query($tag,$content) {
         $sql   = $tag['sql'];
         $result      =  !empty($tag['result'])?$tag['result']:'result';
         $parseStr  =  '<?php $'.$result.' = M()->query("'.$sql.'");';
@@ -51,8 +49,7 @@ class Think extends TagLib{
 
     // 获取字段值 包括统计数据
     // type 包括 getField count max min avg sum
-    public function _value($attr,$content,$type='getField'){
-        $tag        =	$this->parseXmlAttr($attr,'value');
+    public function _value($tag,$content,$type='getField'){
 		$name	=	!empty($tag['name'])?$tag['name']:'Article';
         $type = !empty($tag['type'])?$tag['type']:$type;
         $filter  =  !empty($tag['filter'])?$tag['filter']:'';
@@ -83,8 +80,7 @@ class Think extends TagLib{
         return $this->_value($attr,$content,'avg');
     }
 
-    public function _data($attr,$content){
-        $tag        =	$this->parseXmlAttr($attr,'data');
+    public function _data($tag,$content){
 		$name	=	!empty($tag['name'])?$tag['name']:'Document';
         $result      =  !empty($tag['result'])?$tag['result']:'artcile';
         $parseStr   =  '<?php $'.$result.' =M("'.$name.'")->alias("__DOCUMENT")';
@@ -116,9 +112,7 @@ class Think extends TagLib{
         return $parseStr;
     }
 
-    public function _datalist($attr,$content)
-    {
-        $tag        =	$this->parseXmlAttr($attr,'datalist');
+    public function _datalist($tag,$content) {
 		$name	=	!empty($tag['name'])?$tag['name']:'Document';
         $result      =  !empty($tag['result'])?$tag['result']:'article';
         $key     =   !empty($tag['key'])?$tag['key']:'i';
@@ -163,8 +157,7 @@ class Think extends TagLib{
     }
 
     // 获取分类信息
-    public function _cate($attr,$content){
-        $tag        =	$this->parseXmlAttr($attr,'cate');
+    public function _cate($tag,$content){
         $result      =  !empty($tag['result'])?$tag['result']:'cate';
         if(!empty($tag['id'])) {
             // 获取单个分类
@@ -186,8 +179,7 @@ class Think extends TagLib{
         return $parseStr;
     }
 
-    public function _article($attr,$content){
-        $tag        =	$this->parseXmlAttr($attr,'article');
+    public function _article($tag,$content){
         $result      =  !empty($tag['result'])?$tag['result']:'article';
 		$name	=	!empty($tag['name'])?$tag['name']:'Article';
         $order   =  empty($tag['order'])?'level desc,create_time desc':$tag['order'];

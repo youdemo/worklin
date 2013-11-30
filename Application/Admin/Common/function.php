@@ -35,14 +35,14 @@ function get_list_field($data, $grid,$model){
         foreach($links as $link){
             $array  =   explode('|',$link);
             $href   =   $array[0];
-            if(preg_match('/^\[([a-z]+)\]$/',$href,$matches)){
+            if(preg_match('/^\[([a-z_]+)\]$/',$href,$matches)){
                 $val[]  =   $data2[$matches[1]];
             }else{
                 $show   =   isset($array[1])?$array[1]:$value;
                 // 替换系统特殊字符串
                 $href	=	str_replace(
                     array('[DELETE]','[EDIT]','[MODEL]'),
-                    array('del?id=[id]&model=[MODEL]','edit?id=[id]&model=[MODEL]',$model['id'],),
+                    array('del?id=[id]&model=[MODEL]','edit?id=[id]&model=[MODEL]',$model['id']),
                     $href);
 
                 // 替换数据变量
@@ -68,7 +68,7 @@ function get_attribute_type($type=''){
         'num'       =>  array('数字','int(10) UNSIGNED NOT NULL'),
         'string'    =>  array('字符串','varchar(255) NOT NULL'),
         'textarea'  =>  array('文本框','text NOT NULL'),
-        'datetime'  =>  array('时间','datetime NOT NULL'),
+        'datetime'  =>  array('时间','int(10) NOT NULL'),
         'bool'      =>  array('布尔','tinyint(2) NOT NULL'),
         'select'    =>  array('枚举','char(50) NOT NULL'),
     	'radio'		=>	array('单选','char(10) NOT NULL'),
@@ -95,6 +95,16 @@ function get_status_title($status = null){
         case 0  : return    '禁用';     break;
         case 1  : return    '正常';     break;
         case 2  : return    '待审核';   break;
+        default : return    false;      break;
+    }
+}
+
+// 获取数据的状态操作
+function show_status_op($status) {
+    switch ($status){
+        case 0  : return    '启用';     break;
+        case 1  : return    '禁用';     break;
+        case 2  : return    '审核';		break;
         default : return    false;      break;
     }
 }
@@ -362,6 +372,10 @@ function get_stemma($pids,Model &$model, $field='id'){
  // 暂时和 parse_config_attr功能相同
  // 但请不要互相使用，后期会调整
 function parse_field_attr($string) {
+    if(0 === strpos($string,':')){
+        // 采用函数定义
+        return   eval(substr($string,1).';');
+    }
     $array = preg_split('/[,;\r\n]+/', trim($string, ",;\r\n"));
     if(strpos($string,':')){
         $value  =   array();

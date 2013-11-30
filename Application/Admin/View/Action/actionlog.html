@@ -11,38 +11,32 @@
     </div>
 	<!-- 数据列表 -->
 	<div class="data-table">
-        <?php
-            $thead = array(
-                '_html'=>array(
-                    '_th'=>'row-selected',
-                    'th'=>'<input class="check-all" type="checkbox"/>',
-                    'td'=>'<input class="ids" type="checkbox" name="ids[]" value="$id" />',
-                ),
-                'id'=>'编号',
-                'action_id'=>array(
-					'_title'=> '行为名称',
-					'tag'	=> 'span',
-					'func'	=> 'get_action($action_id, "title")',
-					'href'	=> 'Think/edit?model=$model_id&id=$record_id'
-				),
-                'user_id'=>array(
-                    '_title'=>'执行者',
-                    'tag'   =>'span',
-                    'func'  =>'get_nickname()'
-                ),
-                'create_time'=>array(
-                    '_title'=>'执行时间',
-                    'tag'   =>'span',
-                    'func'  =>'date("y-m-d H:i",$create_time)'
-                ),
-                '操作'=>array(
-					'详细'=>array( 'href' => 'Action/edit?id=$id', 'condition'=>'get_action($action_id,type)==1'),
-					'查看'=>array( 'href' => 'Think/edit?model=$model_id&id=$record_id', 'condition'=>'get_action($action_id,type)==2'),
-                    '删除'=>array( 'href' => 'Action/remove?ids=$id', 'class'=>'confirm ajax-get' ),
-                ),
-            );
-            echo $_table_list = $__controller__->tableList($_list,$thead);
-        ?>
+	<table class="">
+    <thead>
+        <tr>
+		<th class="row-selected row-selected"><input class="check-all" type="checkbox"/></th>
+		<th class="">编号</th>
+		<th class="">行为名称</th>
+		<th class="">执行者</th>
+		<th class="">执行时间</th>
+		<th class="">操作</th>
+		</tr>
+    </thead>
+    <tbody>
+		<volist name="_list" id="vo">
+		<tr>
+            <td><input class="ids" type="checkbox" name="ids[]" value="{$vo.id}" /></td>
+			<td>{$vo.id} </td>
+			<td><a data-id="{$vo.id}" href="{:U('Think/edit?model='.$vo['model_id'].'&id='.$vo['record_id'])}">{:get_action($vo['action_id'],'title')}</a></td>
+			<td>{:get_nickname()}</td>
+			<td><span>{$vo.create_time|time_format}</span></td>
+			<td><a href="{:U('Action/edit?id='.$vo['id'])}">详细</a>
+				<a class="confirm ajax-get" href="{:U('Action/remove?ids='.$vo['id'])}">删除</a>
+                </td>
+		</tr>
+		</volist>
+	</tbody>
+    </table> 
 	</div>
 	<!-- 分页 -->
 	<div class="page">{$_page}</div>

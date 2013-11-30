@@ -35,7 +35,7 @@ class AdminController extends Controller {
         /* 读取数据库中的配置 */
 		$config	=	S('DB_CONFIG_DATA');
 		if(!$config){
-			$config	=	D('Config')->lists();
+			$config	=	api('Config/lists');
 			S('DB_CONFIG_DATA',$config);
 		}
         C($config); //添加配置

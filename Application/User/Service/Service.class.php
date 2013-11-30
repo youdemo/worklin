@@ -7,6 +7,7 @@
 // | Author: 麦当苗儿 <zuojiazi@vip.qq.com> <http://www.zjzit.cn>
 // +----------------------------------------------------------------------
 
-abstract class Service {
+abstract class Service{
+
 
 }

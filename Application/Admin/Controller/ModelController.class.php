@@ -93,6 +93,9 @@ class ModelController extends AdminController {
         }elseif (is_numeric($ids)){
             $map['id'] = $ids;
         }
+
+        //删除模型数据缓存
+        S('DOCUMENT_MODEL_LIST', null);
         switch ($status){
             case -1 : $this->delete($Model, $map, array('success'=>'删除成功','error'=>'删除失败'));break;
             case 0  : $this->forbid($Model, $map, array('success'=>'禁用成功','error'=>'禁用失败'));break;

@@ -18,21 +18,24 @@
     <!-- 表格列表 -->
     <!-- 数据列表 -->
     <div class="data-table table-striped">
-        <?php
-            $thead = array(
-                '_html'=>array(
-                    'th'=>'<input class="check-all" type="checkbox"/>',
-                    'td'=>'<input class="ids" type="checkbox" name="id[]" value="$id" />',
-                ),
-                'name'=> array(
-                    '_title'=>'标识',
-                    '_th'   =>'wid',
-                    'tag'   =>'span',
-                ),
-                'title'=>'模型名称',
-            );
-            echo  $__controller__->tableList($model_list,$thead);
-        ?>
+<table class="">
+    <thead>
+        <tr>
+		<th class="row-selected row-selected"><input class="check-all" type="checkbox"/></th>
+		<th class="">标识</th>
+		<th class="">名称</th>
+		</tr>
+    </thead>
+    <tbody>
+		<volist name="model_list" id="vo">
+		<tr>
+            <td><input class="ids" type="checkbox" name="id[]" value="{$vo.id}" /></td>
+			<td>{$vo.name} </td>
+			<td>{$vo.title}</td>
+		</tr>
+		</volist>
+	</tbody>
+    </table> 
     </div>
 	<div class="main-title">
         <div class="tools fl auth-botton">

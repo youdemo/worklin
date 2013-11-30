@@ -42,6 +42,9 @@ abstract class Addon{
     public function __construct(){
         $this->view         =   \Think\Think::instance('Think\View');
         $this->addon_path   =   ONETHINK_ADDON_PATH.$this->getName().'/';
+        $TMPL_PARSE_STRING = C('TMPL_PARSE_STRING');
+        $TMPL_PARSE_STRING['__ADDONROOT__'] = __ROOT__ . '/Addons/'.$this->getName().'/';
+        C('TMPL_PARSE_STRING', $TMPL_PARSE_STRING);
         if(is_file($this->addon_path.'config.php')){
             $this->config_file = $this->addon_path.'config.php';
         }

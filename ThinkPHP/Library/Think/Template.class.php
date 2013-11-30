@@ -442,7 +442,8 @@ class  Template {
             $attr   =  str_replace('\"','\'',$attr);
         $parse      = '_'.$tag;
         $content    = trim($content);
-        return $tagLib->$parse($attr,$content);
+		$tags		=   $tagLib->parseXmlAttr($attr,$tag);
+        return $tagLib->$parse($tags,$content);
     }
 
     /**

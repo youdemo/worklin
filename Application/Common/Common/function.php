@@ -8,7 +8,7 @@
 // +----------------------------------------------------------------------
 
 // OneThink常量定义
-const ONETHINK_VERSION    = '1.0.131115';
+const ONETHINK_VERSION    = '1.0.131129';
 const ONETHINK_ADDON_PATH = './Addons/';
 
 /**
@@ -441,16 +441,16 @@ function get_category($id, $field = null){
 
     /* 获取分类名称 */
     if(!isset($list[$id])){
-        $cate = D('Category')->info($id);
+        $cate = M('Category')->find($id);
         if(!$cate || 1 != $cate['status']){ //不存在分类，或分类被禁用
             return '';
         }
         $list[$id] = $cate;
         S('sys_category_list', $list); //更新缓存
     }
-
     return is_null($field) ? $list[$id] : $list[$id][$field];
 }
+
 /* 根据ID获取分类标识 */
 function get_category_name($id){
     return get_category($id, 'name');
@@ -603,8 +603,7 @@ function parse_action($action = null, $self){
         }
         //cycle(检查周期)和max(周期内最大执行次数)必须同时存在，否则去掉这两个条件
         if(!array_key_exists('cycle', $return[$key]) || !array_key_exists('max', $return[$key])){
-            unset($return[$key]['cycle']);
-            unset($return[$key]['max']);
+            unset($return[$key]['cycle'],$return[$key]['max']);
         }
     }
 
@@ -761,11 +760,8 @@ function get_model_attribute($model_id, $group = true){
         		$group[$keys[0]] = array_merge($group[$keys[0]], $attr);
         	}
         }
-
-
         $attr = $group;
     }
-
 	return $attr;
 }
 

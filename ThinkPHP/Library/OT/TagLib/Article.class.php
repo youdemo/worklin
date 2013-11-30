@@ -23,11 +23,31 @@ class Article extends TagLib{
 		'next'     => array('attr' => 'name,info', 'close' => 1), //获取下一篇文章信息
 		'page'     => array('attr' => 'cate,listrow', 'close' => 0), //列表分页
 		'position' => array('attr' => 'pos,cate,limit,filed,name', 'close' => 1), //获取推荐位列表
+		'list'     => array('attr' => 'name,category,child,page,row,field', 'close' => 1), //获取指定分类列表
 	);
 
+	public function _list($tag, $content){
+		$name   = $tag['name'];
+		$cate   = $tag['category'];
+		$child  = empty($tag['child']) ? 'false' : $tag['child'];
+		$page   = empty($tag['page'])  ? '0' : $tag['page'];
+		$row    = empty($tag['row'])   ? '10' : $tag['row'];
+		$filed  = empty($tag['filed']) ? 'true' : $tag['filed'];
+
+		$parse  = '<?php ';
+		$parse .= '$category=D(\'Category\')->getChildrenId('.$cate.');';
+		$parse .= '$__LIST__ = D(\'Document\')->page('.$page.','.$row.')->lists(';
+		$parse .= '$category, \'`id` DESC\', 1,';
+		$parse .= $filed . ');';
+		$parse .= ' ?>';
+		$parse .= '<volist name="__LIST__" id="'. $name .'">';
+		$parse .= $content;
+		$parse .= '</volist>';
+		return $parse;
+	}
+
 	/* 推荐位列表 */
-	public function _position($attr, $content){
-		$tag    = $this->parseXmlAttr($attr, 'next');
+	public function _position($tag, $content){
 		$pos    = $tag['pos'];
 		$cate   = $tag['cate'];
 		$limit  = empty($tag['limit']) ? 'null' : $tag['limit'];
@@ -47,8 +67,7 @@ class Article extends TagLib{
 	}
 
 	/* 列表数据分页 */
-	public function _page($attr){
-		$tag     = $this->parseXmlAttr($attr, 'next');
+	public function _page($tag){
 		$cate    = $tag['cate'];
 		$listrow = $tag['listrow'];
 		$parse   = '<?php ';
@@ -59,8 +78,7 @@ class Article extends TagLib{
 	}
 
 	/* 获取下一篇文章信息 */
-	public function _next($attr, $content){
-		$tag    = $this->parseXmlAttr($attr, 'next');
+	public function _next($tag, $content){
 		$name   = $tag['name'];
 		$info   = $tag['info'];
 		$parse  = '<?php ';
@@ -73,8 +91,7 @@ class Article extends TagLib{
 	}
 
 	/* 获取上一篇文章信息 */
-	public function _prev($attr, $content){
-		$tag    = $this->parseXmlAttr($attr, 'prev');
+	public function _prev($tag, $content){
 		$name   = $tag['name'];
 		$info   = $tag['info'];
 		$parse  = '<?php ';
@@ -87,8 +104,7 @@ class Article extends TagLib{
 	}
 
 	/* 段落数据分页 */
-	public function _partpage($attr){
-		$tag     = $this->parseXmlAttr($attr, 'next');
+	public function _partpage($tag){
 		$id      = $tag['id'];
 		$listrow = $tag['listrow'];
 		$parse   = '<?php ';
@@ -100,8 +116,7 @@ class Article extends TagLib{
 	}
 
 	/* 段落列表 */
-	public function _partlist($attr, $content){
-		$tag    = $this->parseXmlAttr($attr, 'partlist');
+	public function _partlist($tag, $content){
 		$id     = $tag['id'];
 		$field  = $tag['field'];
 		$name   = $tag['name'];

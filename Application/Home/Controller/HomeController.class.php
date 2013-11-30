@@ -24,7 +24,7 @@ class HomeController extends Controller {
 
     protected function _initialize(){
         /* 读取站点配置 */
-        $config = D('Config')->lists();
+        $config = api('Config/lists');
         C($config); //添加配置
 
         if(!C('WEB_SITE_CLOSE')){
